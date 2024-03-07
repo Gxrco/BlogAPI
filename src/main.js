@@ -1,10 +1,30 @@
 import express from 'express'
+import fs from 'fs'
 import {
   getAllPosts, createPost, getPostById, updatePost, deletePost,
 } from './db.js'
 
 const app = express()
 app.use(express.json())
+
+app.use((req, res, next) => {
+  const originalSend = res.send
+  let responseBody
+
+  res.send = function (body) {
+    responseBody = body
+    originalSend.call(this, body)
+  }
+
+  res.on('finish', () => {
+    const logEntry = `${new Date().toISOString()}, Path: ${req.path}, Method: ${req.method}, Request Payload: ${JSON.stringify(req.body)}, Response: ${responseBody}\n`
+    fs.appendFile('log.txt', logEntry, (err) => {
+      if (err) console.error('Error writing to log file', err)
+    })
+  })
+
+  next()
+})
 
 app.post('/', async (req, res) => {
   res.send('HELLO FROM POST')
