@@ -1,9 +1,7 @@
 import express from 'express'
-import { getAllPosts } from './db.js'
-import { createPost } from './db.js'
-import { getPostById } from './db.js'
-import { updatePost } from './db.js'
-import { deletePost } from './db.js'
+import {
+  getAllPosts, createPost, getPostById, updatePost, deletePost,
+} from './db.js'
 
 const app = express()
 app.use(express.json())
@@ -12,22 +10,22 @@ app.post('/', async (req, res) => {
   res.send('HELLO FROM POST')
 })
 
-//GET: Obtener todos los posts
+// GET: Obtener todos los posts
 app.get('/posts', async (req, res) => {
   try {
     const posts = await getAllPosts()
-    res.status(200).json({ message: 'Posts retrieved', data: posts });
+    res.status(200).json({ message: 'Posts retrieved', data: posts })
   } catch (err) {
     res.status(500).send('Error retrieving posts')
   }
 })
 
-//GET: Obtener un post por id
+// GET: Obtener un post por id
 app.get('/post/:id', async (req, res) => {
   try {
     const post = await getPostById(req.params.id)
     if (post) {
-      res.status(200).json({ message: 'Posts retrieved', data: post });
+      res.status(200).json({ message: 'Posts retrieved', data: post })
     } else {
       res.status(404).send('Post not found')
     }
@@ -36,9 +34,9 @@ app.get('/post/:id', async (req, res) => {
   }
 })
 
-//POST: Crear un post
+// POST: Crear un post
 app.post('/post', async (req, res) => {
-  const {title,content,image} = req.body
+  const { title, content, image } = req.body
   console.log(req.body)
   if (!title || !content) {
     res.status(400).send('Title and content are required')
@@ -52,9 +50,9 @@ app.post('/post', async (req, res) => {
   }
 })
 
-//PUT: Actualizar un post
+// PUT: Actualizar un post
 app.put('/post/:id', async (req, res) => {
-  const {title,content,image} = req.body
+  const { title, content, image } = req.body
   try {
     await updatePost(req.params.id, title, content, image)
     res.status(200).send('Post updated')
@@ -63,7 +61,7 @@ app.put('/post/:id', async (req, res) => {
   }
 })
 
-//DELETE: Borrar un post
+// DELETE: Borrar un post
 app.delete('/post/:id', async (req, res) => {
   try {
     await deletePost(req.params.id)
