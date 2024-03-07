@@ -7,6 +7,7 @@ import {
 const app = express()
 app.use(express.json())
 
+// Middleware para loggear las peticiones
 app.use((req, res, next) => {
   const originalSend = res.send
   let responseBody
@@ -19,13 +20,16 @@ app.use((req, res, next) => {
   res.on('finish', () => {
     const logEntry = `${new Date().toISOString()}, Path: ${req.path}, Method: ${req.method}, Request Payload: ${JSON.stringify(req.body)}, Response: ${responseBody}\n`
     fs.appendFile('log.txt', logEntry, (err) => {
-      if (err) console.error('Error writing to log file', err)
+      if (err) {
+        console.error('Error writing to log file', err)
+      }
     })
   })
 
   next()
 })
 
+// TEST: GET
 app.post('/', async (req, res) => {
   res.send('HELLO FROM POST')
 })
@@ -57,7 +61,6 @@ app.get('/post/:id', async (req, res) => {
 // POST: Crear un post
 app.post('/post', async (req, res) => {
   const { title, content, image } = req.body
-  console.log(req.body)
   if (!title || !content) {
     res.status(400).send('Title and content are required')
   } else {
@@ -73,11 +76,16 @@ app.post('/post', async (req, res) => {
 // PUT: Actualizar un post
 app.put('/post/:id', async (req, res) => {
   const { title, content, image } = req.body
+
+  if (title === undefined && content === undefined && image === undefined) {
+    return res.status(400).send('At least one of title, content, or image must be provided')
+  }
+
   try {
     await updatePost(req.params.id, title, content, image)
-    res.status(200).send('Post updated')
+    return res.status(200).send('Post updated')
   } catch (err) {
-    res.status(500).send('Error updating post')
+    return res.status(500).send('Error updating post')
   }
 })
 
@@ -91,8 +99,11 @@ app.delete('/post/:id', async (req, res) => {
   }
 })
 
+// Rutas no existentes
+app.use((req, res) => {
+  res.status(400).send('Endpoint not found or incorrect data format')
+})
+
 const port = 3001
 
-app.listen(port, () => {
-  console.log(`Server listening at http://127.0.0.1:${port}`)
-})
+app.listen(port)

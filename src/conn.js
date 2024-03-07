@@ -10,14 +10,4 @@ const pool = mysql.createPool({
   queueLimit: 0,
 })
 
-pool.getConnection()
-  .then((connection) => {
-    console.log('Connected to MySQL database successfully')
-    connection.release()
-  })
-  .catch((error) => {
-    console.error('Error connecting to MySQL database:', error)
-    process.exit(1)
-  })
-
 export default pool

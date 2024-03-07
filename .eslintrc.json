@@ -9,7 +9,8 @@
         "sourceType": "module"
     },
     "rules": {
-        "semi": ["error", "never"],
+        "semi": ["error", "never"], 
+        "func-names": ["error", "never"],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -17,6 +18,6 @@
         "js": "ignorePackages" 
       }
     ],
-    "no-console": 0
+    "no-console": 0 
     }
 }
