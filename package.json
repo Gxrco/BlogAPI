@@ -5,13 +5,15 @@
   "main": "src/main.js",
   "scripts": {
     "start": "node src/main.js",
-    "lint":"eslint src/*.js"
+    "lint": "eslint src/*.js"
   },
   "author": "Gerco",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.3",
-    "mysql2": "^3.9.2"
+    "mysql2": "^3.9.2",
+    "swagger-ui-express": "^5.0.0",
+    "yamljs": "^0.3.0"
   },
   "type": "module",
   "devDependencies": {
