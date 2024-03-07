@@ -1,0 +1,148 @@
+openapi: 3.0.0
+info:
+  title: Blog Posts API
+  version: 1.0.0
+  description: An API for creating, retrieving, updating, and deleting blog posts.
+servers:
+  - url: http://localhost:3001/
+    description: Local server
+paths:
+  /posts:
+    get:
+      summary: Get all posts
+      operationId: getAllPosts
+      responses:
+        '200':
+          description: A list of posts.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        '500':
+          description: Error retrieving posts.
+
+  /post:
+    post:
+      summary: Create a new post
+      operationId: createPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPost'
+      responses:
+        '201':
+          description: Post created.
+        '400':
+          description: Title and content are required.
+        '500':
+          description: Error creating post.
+
+  /post/{id}:
+    get:
+      summary: Get a post by ID
+      operationId: getPostById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single post.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post not found.
+        '500':
+          description: Error retrieving post.
+    put:
+      summary: Update a post by ID
+      operationId: updatePost
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePost'
+      responses:
+        '200':
+          description: Post updated.
+        '400':
+          description: At least one of title, content, or image must be provided.
+        '500':
+          description: Error updating post.
+    delete:
+      summary: Delete a post by ID
+      operationId: deletePost
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post deleted.
+        '500':
+          description: Error deleting post.
+
+components:
+  schemas:
+    NewPost:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+          format: uri
+          description: Image associated with the post in Base64 format.
+
+    UpdatePost:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+          format: uri
+          description: Image associated with the post in Base64 format.
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+          format: uri
+          description: Image associated with the post in Base64 format.
