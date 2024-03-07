@@ -1,9 +1,9 @@
-import express from 'express';
-import fs from 'fs';
-import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import express from 'express'
+import fs from 'fs'
+import swaggerUi from 'swagger-ui-express'
+import YAML from 'yamljs'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 import {
   getAllPosts, createPost, getPostById, updatePost, deletePost,
 } from './db.js'
@@ -11,12 +11,12 @@ import {
 const app = express()
 app.use(express.json())
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const filename = fileURLToPath(import.meta.url)
+const Dirname = dirname(filename)
 
-const swaggerDocument = YAML.load(join(__dirname, '../docs/swagger/swagger.yaml'));
+const swaggerDocument = YAML.load(join(Dirname, '../docs/swagger/swagger.yaml'))
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Middleware para loggear las peticiones
 app.use((req, res, next) => {
@@ -56,7 +56,7 @@ app.get('/posts', async (req, res) => {
 })
 
 // GET: Obtener un post por id
-app.get('/post/:id', async (req, res) => {
+app.get('/posts/:id', async (req, res) => {
   try {
     const post = await getPostById(req.params.id)
     if (post) {
@@ -70,7 +70,7 @@ app.get('/post/:id', async (req, res) => {
 })
 
 // POST: Crear un post
-app.post('/post', async (req, res) => {
+app.post('/posts', async (req, res) => {
   const { title, content, image } = req.body
   if (!title || !content) {
     res.status(400).send('Title and content are required')
@@ -85,7 +85,7 @@ app.post('/post', async (req, res) => {
 })
 
 // PUT: Actualizar un post
-app.put('/post/:id', async (req, res) => {
+app.put('/posts/:id', async (req, res) => {
   const { title, content, image } = req.body
 
   if (title === undefined && content === undefined && image === undefined) {
@@ -101,10 +101,10 @@ app.put('/post/:id', async (req, res) => {
 })
 
 // DELETE: Borrar un post
-app.delete('/post/:id', async (req, res) => {
+app.delete('/posts/:id', async (req, res) => {
   try {
     await deletePost(req.params.id)
-    res.status(200).send('Post deleted')
+    res.status(204).send('Post deleted')
   } catch (err) {
     res.status(500).send('Error deleting post')
   }
@@ -112,7 +112,7 @@ app.delete('/post/:id', async (req, res) => {
 
 // Rutas no existentes
 app.use((req, res) => {
-  res.status(400).send('Endpoint not found or incorrect data format')
+  res.status(400).send('Endpoint not found')
 })
 
 const port = 3001

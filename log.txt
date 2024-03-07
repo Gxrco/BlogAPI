@@ -1,3 +1,14 @@
 2024-03-07T02:32:52.193Z, Path: /posts, Method: GET, Request Payload: {}, Response: {"message":"Posts retrieved","data":[{"id":1,"title":"Muchas horas de juego","content":"Hoy un dia como otro el gato ha estado jugando durante pocas horas","created_at":"2024-03-05T22:54:43.000Z","image":"--imagen en base64"}]}
 2024-03-07T02:32:59.201Z, Path: /posts/1, Method: GET, Request Payload: {}, Response: undefined
 2024-03-07T02:33:04.479Z, Path: /post/1, Method: GET, Request Payload: {}, Response: {"message":"Posts retrieved","data":{"id":1,"title":"Muchas horas de juego","content":"Hoy un dia como otro el gato ha estado jugando durante pocas horas","created_at":"2024-03-05T22:54:43.000Z","image":"--imagen en base64"}}
+2024-03-07T15:26:56.067Z, Path: /post/1, Method: DELETE, Request Payload: {}, Response: Post deleted
+2024-03-07T15:27:21.533Z, Path: /posts, Method: GET, Request Payload: {}, Response: {"message":"Posts retrieved","data":[]}
+2024-03-07T15:28:12.750Z, Path: /post, Method: POST, Request Payload: {"title":"Día 06/03","content":"Mi gato se ha levantado bastante animado para poder empezar el día desde temprano","image":"--image"}, Response: Post created
+2024-03-07T15:28:25.494Z, Path: /posts, Method: GET, Request Payload: {}, Response: {"message":"Posts retrieved","data":[{"id":3,"title":"Día 06/03","content":"Mi gato se ha levantado bastante animado para poder empezar el día desde temprano","created_at":"2024-03-07T21:28:12.000Z","image":"--image"}]}
+2024-03-07T15:54:25.013Z, Path: /post/1, Method: GET, Request Payload: {}, Response: Post not found
+2024-03-07T15:54:33.879Z, Path: /no, Method: GET, Request Payload: {}, Response: Endpoint not found or incorrect data format
+2024-03-07T15:54:44.326Z, Path: /posts, Method: GET, Request Payload: {}, Response: {"message":"Posts retrieved","data":[{"id":3,"title":"Día 06/03","content":"Mi gato se ha levantado bastante animado para poder empezar el día desde temprano","created_at":"2024-03-07T21:28:12.000Z","image":"--image"}]}
+2024-03-07T15:54:50.781Z, Path: /posts/3, Method: GET, Request Payload: {}, Response: Endpoint not found or incorrect data format
+2024-03-07T15:54:54.400Z, Path: /post/3, Method: GET, Request Payload: {}, Response: {"message":"Posts retrieved","data":{"id":3,"title":"Día 06/03","content":"Mi gato se ha levantado bastante animado para poder empezar el día desde temprano","created_at":"2024-03-07T21:28:12.000Z","image":"--image"}}
+2024-03-07T15:56:04.506Z, Path: /posts, Method: GET, Request Payload: {}, Response: {"message":"Posts retrieved","data":[{"id":3,"title":"Día 06/03","content":"Mi gato se ha levantado bastante animado para poder empezar el día desde temprano","created_at":"2024-03-07T21:28:12.000Z","image":"--image"}]}
+2024-03-07T15:56:11.621Z, Path: /pos, Method: GET, Request Payload: {}, Response: Endpoint not found or incorrect data format
