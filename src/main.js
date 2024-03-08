@@ -4,12 +4,14 @@ import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import cors from 'cors';
 import {
   getAllPosts, createPost, getPostById, updatePost, deletePost,
 } from './db.js'
 
 const app = express()
 app.use(express.json())
+app.use(cors());
 
 const filename = fileURLToPath(import.meta.url)
 const Dirname = dirname(filename)
