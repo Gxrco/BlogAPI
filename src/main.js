@@ -4,12 +4,19 @@ import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import bcryptjs from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import cors from 'cors';
 import {
-  getAllPosts, createPost, getPostById, updatePost, deletePost,
+  getAllPosts, createPost, getPostById, updatePost, deletePost, createUser, findUserByUsername
 } from './db.js'
 
 const app = express()
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const SECRET_KEY = 'your_secret_key';
+
 app.use(express.json())
 app.use(cors());
 
@@ -111,6 +118,53 @@ app.delete('/posts/:id', async (req, res) => {
     res.status(500).send('Error deleting post')
   }
 })
+
+// POST: Crear un usuario
+app.post('/register', async (req, res) => {
+  const { username, password } = req.body
+
+  if (!username || !password) {
+    return res.status(400).send('Username and password are required')
+  }
+
+  try {
+    const salt = bcryptjs.genSaltSync(10)
+    const hashedPassword = bcryptjs.hashSync(password, salt)
+    await createUser(username, hashedPassword)
+    res.status(201).send('User created')
+  } catch (err) {
+    if (err.code === 'ER_DUP_ENTRY') {
+      res.status(409).send('Username already exists');
+    } else {
+      res.status(500).send('Error creating user');
+    }
+  }  
+})
+
+// POST: Login
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+      return res.status(400).send('Username and password are required');
+  }
+
+  try {
+      const user = await findUserByUsername(username);
+      if (user && await bcryptjs.compare(password, user.password)) {
+          const token = jwt.sign(
+              { userId: user.id, username: user.username },
+              SECRET_KEY,
+              { expiresIn: '1h' }
+          );
+          res.status(200).json({ token: token });
+      } else {
+          res.status(401).send('Invalid credentials');
+      }
+  } catch (err) {
+      res.status(500).send('Server error');
+  }
+});
 
 // Rutas no existentes
 app.use((req, res) => {
