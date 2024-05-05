@@ -4,16 +4,14 @@ import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import cors from 'cors';
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import cors from 'cors';
 import {
   getAllPosts, createPost, getPostById, updatePost, deletePost, createUser, findUserByUsername
 } from './db.js'
 
 const app = express()
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = 'your_secret_key';
 
