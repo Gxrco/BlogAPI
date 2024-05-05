@@ -27,7 +27,7 @@ export async function deletePost(id) {
 
 export async function findUserByUsername(query) {
   const [result] = await conn.query('SELECT * FROM users WHERE username = ?', [query])
-  return result
+  return result[0]
 }
 
 export async function createUser(username, password) {
