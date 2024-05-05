@@ -24,3 +24,13 @@ export async function deletePost(id) {
   const [result] = await conn.query('DELETE FROM blog_posts WHERE id = ?', [id])
   return result
 }
+
+export async function findUserByUsername(query) {
+  const [result] = await conn.query('SELECT * FROM users WHERE username = ?', [query])
+  return result
+}
+
+export async function createUser(username, password) {
+  const [result] = await conn.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, password])
+  return result
+}
