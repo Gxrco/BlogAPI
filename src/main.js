@@ -168,18 +168,26 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
-  if (token == null) return res.status(401).json({ error: "No token provided" });
+  if (token == null) {
+    return res.status(401).json({ authenticated: false, error: "No token provided" });
+  }
 
   jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) return res.status(403).json({ error: "Token is not valid" });
-    req.user = user;
+    if (err) {
+      return res.status(403).json({ authenticated: false, error: "Token is not valid" });
+    }
+    req.user = user;  // Agregar información del usuario al objeto de solicitud
     next();
   });
 };
 
 // GET: Autenticar usuario
 app.get('/auth', authenticateToken, (req, res) => {
-  res.status(200).json({ message: "Authenticated" });
+  res.status(200).json({
+    authenticated: true,
+    message: "Authenticated",
+    user: req.user  
+  });
 });
 
 // Rutas no existentes
